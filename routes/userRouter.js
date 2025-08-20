@@ -1,18 +1,18 @@
 import express from "express";
+import auth from "../middleware/authMiddleware.js";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
-import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // Get current user
-router.get("/me", authMiddleware, async (req, res) => {
-  const user = await User.findById(req.user.id).select("-password");
+router.get("/me", auth, async (req, res) => {
+  const user = await user.findById(req.user.id).select("-password");
   res.json(user);
 });
 
 // Update profile fields
-router.patch("/:id/name", authMiddleware, async (req, res) => {
+router.patch("/:id/name", auth, async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { name: req.body.name },
@@ -20,7 +20,7 @@ router.patch("/:id/name", authMiddleware, async (req, res) => {
   );
   res.json(user);
 });
-router.patch("/:id/email", authMiddleware, async (req, res) => {
+router.patch("/:id/email", auth, async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { email: req.body.email },
@@ -28,7 +28,7 @@ router.patch("/:id/email", authMiddleware, async (req, res) => {
   );
   res.json(user);
 });
-router.patch("/:id/gender", authMiddleware, async (req, res) => {
+router.patch("/:id/gender", auth, async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { gender: req.body.gender },
@@ -36,7 +36,7 @@ router.patch("/:id/gender", authMiddleware, async (req, res) => {
   );
   res.json(user);
 });
-router.patch("/:id/phone", authMiddleware, async (req, res) => {
+router.patch("/:id/phone", auth, async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { phone: req.body.phone },
@@ -44,7 +44,7 @@ router.patch("/:id/phone", authMiddleware, async (req, res) => {
   );
   res.json(user);
 });
-router.patch("/:id/password", authMiddleware, async (req, res) => {
+router.patch("/:id/password", auth, async (req, res) => {
   const hashed = await bcrypt.hash(req.body.password, 10);
   const user = await User.findByIdAndUpdate(
     req.params.id,
@@ -55,7 +55,7 @@ router.patch("/:id/password", authMiddleware, async (req, res) => {
 });
 
 // Mark onboarding as done
-router.post("/:id/onboarding", authMiddleware, async (req, res) => {
+router.post("/:id/onboarding", auth, async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { onboardingDone: true },

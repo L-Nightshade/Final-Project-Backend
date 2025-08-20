@@ -17,14 +17,13 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 5000;
 
 const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
 
     console.log("Database Connected");
-    console.log("JWT_SECRET is:", process.env.JWT_SECRETkey);
 
     //     console.log("Skipping Database Connection till Mongo URI Is Available...");
 
